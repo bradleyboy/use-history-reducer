@@ -8,6 +8,8 @@ const BEGIN_FORK = Symbol("BEGIN_FORK");
 const COMMIT_FORK = Symbol("COMMIT_FORK");
 const REVERT_FORK = Symbol("REVERT_FORK");
 
+const COUNTS = Symbol("COUNTS");
+
 class History {
   constructor(initialState) {
     this.undoable = [];
@@ -16,6 +18,14 @@ class History {
     this.forkedState = null;
     this.checkpointState = initialState;
     this.checkpointPatches = [];
+  }
+
+  counts() {
+    return {
+      undos: this.undoable.length,
+      redos: this.redoable.length,
+      unchecked: this.checkpointPatches.length
+    };
   }
 
   checkpoint() {
@@ -129,49 +139,76 @@ export default function useHistoryReducer(reducer, initialState) {
     return (state, action) => {
       switch (action.type) {
         case BEGIN_FORK:
-          history.current.fork(state);
+          history.current.fork(state.state);
 
           return state;
 
         case REVERT_FORK:
-          return history.current.revert();
+          return {
+            state: history.current.revert(),
+            counts: history.current.counts()
+          };
 
         case COMMIT_FORK:
-          return history.current.commit();
+          return {
+            state: history.current.commit(),
+            counts: history.current.counts()
+          };
 
         case UNDO:
-          return applyPatches(state, history.current.rewind(action.payload));
+          return {
+            state: applyPatches(state, history.current.rewind(action.payload)),
+            counts: history.current.counts()
+          };
 
         case REDO:
-          return applyPatches(state, history.current.forward(action.payload));
+          return {
+            state: applyPatches(state, history.current.forward(action.payload)),
+            counts: history.current.counts()
+          };
+
+        case COUNTS:
+          return {
+            state: state.state,
+            counts: history.current.counts()
+          };
 
         default: {
           const [newState, patches, inversePatches] = reducerWithPatches(
-            state,
+            state.state,
             action
           );
 
           history.current.push({ patches, inversePatches });
 
-          return newState;
+          return {
+            state: newState,
+            counts: history.current.counts()
+          };
         }
       }
     };
   }, [reducer]);
 
-  const [state, dispatch] = useReducer(finalReducer, initialState);
+  const [state, dispatch] = useReducer(finalReducer, {
+    counts: { undos: 0, redos: 0, unchecked: 0 },
+    state: initialState
+  });
 
   return [
-    state,
+    state.state,
     {
-      undoCount: history.current.undoable.length,
-      redoCount: history.current.redoable.length,
+      counts: state.counts,
       undo: (n = 1) => dispatch({ type: UNDO, payload: n }),
       redo: (n = 1) => dispatch({ type: REDO, payload: n }),
       fork: () => dispatch({ type: BEGIN_FORK }),
       commit: () => dispatch({ type: COMMIT_FORK }),
       revert: () => dispatch({ type: REVERT_FORK }),
-      checkpoint: () => history.current.checkpoint()
+      checkpoint: () => {
+        const changes = history.current.checkpoint();
+        dispatch({ type: COUNTS });
+        return changes;
+      }
     },
     dispatch
   ];

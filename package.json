@@ -1,0 +1,25 @@
+{
+  "name": "use-history-reducer",
+  "version": "0.0.1",
+  "description": "Immer-based reducer with undo/redo",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Brad Daily <brad@bradleyboy.com>",
+  "license": "MIT",
+  "dependencies": {
+    "immer": "^4.0.1",
+    "react": "^16.10.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-react": "^7.0.0",
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.3.0",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "react-dom": "^16.10.2"
+  }
+}

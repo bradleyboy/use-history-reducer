@@ -1,6 +1,6 @@
 {
   "name": "use-history-reducer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Immer-based reducer with undo/redo, checkpoints, and forking",
   "main": "dist/index.js",
   "scripts": {
@@ -21,7 +21,13 @@
     "type": "git",
     "url": "https://github.com/bradleyboy/use-history-reducer.git"
   },
-  "keywords": ["immer", "react", "reducer", "undo", "hooks"],
+  "keywords": [
+    "immer",
+    "react",
+    "reducer",
+    "undo",
+    "hooks"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",

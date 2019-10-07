@@ -19,8 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bradleyboby/use-history-reducer.git"
+    "url": "https://github.com/bradleyboy/use-history-reducer.git"
   },
+  "keywords": ["immer", "react", "reducer", "undo", "hooks"],
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",

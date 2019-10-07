@@ -12,7 +12,9 @@
   "author": "Brad Daily <brad@bradleyboy.com>",
   "license": "MIT",
   "dependencies": {
-    "immer": "^4.0.1",
+    "immer": "^4.0.1"
+  },
+  "peerDependencies": {
     "react": "^16.10.2"
   },
   "repository": {
@@ -28,6 +30,7 @@
     "@testing-library/react": "^9.3.0",
     "babel-jest": "^24.9.0",
     "jest": "^24.9.0",
+    "react": "^16.10.2",
     "react-dom": "^16.10.2"
   }
 }

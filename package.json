@@ -1,6 +1,6 @@
 {
   "name": "use-history-reducer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Immer-based reducer with undo/redo, checkpoints, and forking",
   "main": "dist/index.js",
   "scripts": {

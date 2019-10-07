@@ -1,10 +1,13 @@
 {
   "name": "use-history-reducer",
   "version": "0.0.1",
-  "description": "Immer-based reducer with undo/redo",
-  "main": "index.js",
+  "description": "Immer-based reducer with undo/redo, checkpoints, and forking",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "babel index.js --out-dir dist",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "author": "Brad Daily <brad@bradleyboy.com>",
   "license": "MIT",
@@ -12,7 +15,12 @@
     "immer": "^4.0.1",
     "react": "^16.10.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradleyboby/use-history-reducer.git"
+  },
   "devDependencies": {
+    "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",

@@ -157,13 +157,13 @@ export default function useHistoryReducer(reducer, initialState) {
 
         case UNDO:
           return {
-            state: applyPatches(state, history.current.rewind(action.payload)),
+            state: applyPatches(state.state, history.current.rewind(action.payload)),
             counts: history.current.counts()
           };
 
         case REDO:
           return {
-            state: applyPatches(state, history.current.forward(action.payload)),
+            state: applyPatches(state.state, history.current.forward(action.payload)),
             counts: history.current.counts()
           };
 

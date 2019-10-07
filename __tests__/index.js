@@ -12,11 +12,15 @@ function reducer(state, action) {
 }
 
 function TestComponent({ onCheckpoint }) {
-  const [state, changes, dispatch] = useHistoryReducer(reducer, { count: 1 });
+  const [state, changes, dispatch] = useHistoryReducer(reducer, {
+    count: 1,
+    user: { name: "fred" }
+  });
 
   return (
     <div>
       <main data-testid="count">{state.count}</main>
+      <p data-testid="name">{state.user.name}</p>
       <button data-testid="inc" onClick={() => dispatch({ type: "+" })}>
         ++
       </button>
@@ -52,10 +56,12 @@ test("does basic undo/redo", () => {
   const { getByTestId } = render(<TestComponent />);
 
   const countEl = getByTestId("count");
+  const nameEl = getByTestId("name");
   const undoCountEl = getByTestId("undo-count");
   const redoCountEl = getByTestId("redo-count");
 
   expect(countEl).toHaveTextContent(1);
+  expect(nameEl).toHaveTextContent('fred');
   expect(undoCountEl).toHaveTextContent(0);
   expect(redoCountEl).toHaveTextContent(0);
 
@@ -64,13 +70,16 @@ test("does basic undo/redo", () => {
   expect(countEl).toHaveTextContent(3);
   expect(undoCountEl).toHaveTextContent(2);
   expect(redoCountEl).toHaveTextContent(0);
+  expect(nameEl).toHaveTextContent('fred');
 
   getByTestId("undo").click();
+  expect(nameEl).toHaveTextContent('fred');
   expect(countEl).toHaveTextContent(2);
   expect(undoCountEl).toHaveTextContent(1);
   expect(redoCountEl).toHaveTextContent(1);
 
   getByTestId("redo").click();
+  expect(nameEl).toHaveTextContent('fred');
   expect(countEl).toHaveTextContent(3);
   expect(undoCountEl).toHaveTextContent(2);
   expect(redoCountEl).toHaveTextContent(0);
